@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xin Lỗi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Trái tim rơi trong background */
+        .heart {
+            position: absolute;
+            color: rgba(255, 182, 193, 0.6);
+            font-size: 20px;
+            animation: heartFall linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes heartFall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            position: relative;
+            min-height: 300px;
+        }
+
+        .sorry-text {
+            font-size: 3em;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .agree-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .agree-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+
+        .disagree-btn {
+            background: linear-gradient(45deg, #666, #888);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 102, 102, 0.4);
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .disagree-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 102, 102, 0.6);
+        }
+
+        .disagree-btn.jumping {
+            animation: jumpAway 0.5s ease-out;
+        }
+
+        @keyframes jumpAway {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .animation-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #ffd1ff 100%);
+            overflow: hidden;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .sorry-message {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            padding: 40px 60px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+            border: 3px solid #ff9a9e;
+            position: relative;
+            animation: gentleBounce 2s ease-in-out infinite;
+        }
+
+        .sorry-message h2 {
+            color: #ff6b9d;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(255, 107, 157, 0.3);
+        }
+
+        .sorry-message p {
+            color: #666;
+            font-size: 1.3em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 30px;
+            animation: floatHeart 4s ease-in-out infinite;
+        }
+
+        .sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .sparkle {
+            position: absolute;
+            color: #ffd700;
+            font-size: 20px;
+            animation: sparkleAnimation 3s ease-in-out infinite;
+        }
+
+        .cute-decoration {
+            position: absolute;
+            font-size: 40px;
+            animation: gentleFloat 3s ease-in-out infinite;
+        }
+
+        .decoration-1 { top: 10%; left: 10%; animation-delay: 0s; }
+        .decoration-2 { top: 20%; right: 15%; animation-delay: 1s; }
+        .decoration-3 { bottom: 20%; left: 15%; animation-delay: 2s; }
+        .decoration-4 { bottom: 15%; right: 10%; animation-delay: 0.5s; }
+
+        @keyframes gentleBounce {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
+        }
+
+        @keyframes floatHeart {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.7; }
+            50% { transform: translateY(-20px) rotate(10deg); opacity: 1; }
+        }
+
+        @keyframes sparkleAnimation {
+            0%, 100% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1) rotate(180deg); opacity: 1; }
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-15px) rotate(5deg); }
+            66% { transform: translateY(-5px) rotate(-3deg); }
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Màu sắc ngẫu nhiên cho chữ rơi - theme màu hồng cute */
+        .color-1 { color: #ff6b9d; }
+        .color-2 { color: #c44b99; }
+        .color-3 { color: #f093fb; }
+        .color-4 { color: #ff9a9e; }
+        .color-5 { color: #fecfef; }
+        .color-6 { color: #ff8a80; }
+        .color-7 { color: #f48fb1; }
+        .color-8 { color: #ce93d8; }
+    </style>
+</head>
+<body>
+    <div class="container" id="mainContainer">
+        <h1 class="sorry-text">Xin lỗi</h1>
+        <div class="buttons-container">
+            <button class="agree-btn" onclick="startAnimation()">Đồng ý</button>
+            <button class="disagree-btn" id="disagreeBtn" onclick="jumpButton()">Không đồng ý</button>
+        </div>
+    </div>
+
+    <div class="animation-container" id="animationContainer">
+        <button class="back-btn" onclick="goBack()">← Quay lại</button>
+        
+        <div class="sorry-message">
+            <h2>Xin lỗi gái nhiều ạaa 💕</h2>
+            <p>Hứa sẽ không làm thế nữa đâu ạaaa</p>
+            <p>Tha lỗi cho a nhaaa 🥺</p>
+        </div>
+
+        <div class="floating-hearts">
+            <div class="floating-heart" style="top: 20%; left: 20%;">💖</div>
+            <div class="floating-heart" style="top: 30%; left: 70%;">💝</div>
+            <div class="floating-heart" style="top: 60%; left: 10%;">💕</div>
+            <div class="floating-heart" style="top: 70%; left: 80%;">💗</div>
+        </div>
+
+        <div class="sparkles">
+            <div class="sparkle" style="top: 15%; left: 50%;">✨</div>
+            <div class="sparkle" style="top: 40%; left: 30%;">⭐</div>
+            <div class="sparkle" style="top: 50%; left: 85%;">✨</div>
+            <div class="sparkle" style="top: 80%; left: 60%;">⭐</div>
+        </div>
+
+        <div class="cute-decoration decoration-1">🌸</div>
+        <div class="cute-decoration decoration-2">🎀</div>
+        <div class="cute-decoration decoration-3">🌺</div>
+        <div class="cute-decoration decoration-4">🦋</div>
+    </div>
+
+    <script>
+        let animationInterval;
+        let fallingTexts = [];
+        let heartInterval;
+        let jumpCount = 0;
+
+        // Tạo trái tim rơi trong background
+        function createBackgroundHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '💖';
+            
+            const randomX = Math.random() * window.innerWidth;
+            heart.style.left = randomX + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.parentNode.removeChild(heart);
+                }
+            }, 7000);
+        }
+
+        // Function để nút "Không đồng ý" nhảy đi
+        function jumpButton() {
+            const btn = document.getElementById('disagreeBtn');
+            const container = document.getElementById('mainContainer');
+            const containerRect = container.getBoundingClientRect();
+            
+            jumpCount++;
+            
+            // Thêm class animation
+            btn.classList.add('jumping');
+            
+            // Tạo vị trí ngẫu nhiên trong container
+            const maxX = containerRect.width - btn.offsetWidth - 40; // trừ padding
+            const maxY = containerRect.height - btn.offsetHeight - 40;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            // Di chuyển button
+            setTimeout(() => {
+                btn.style.position = 'absolute';
+                btn.style.left = randomX + 'px';
+                btn.style.top = randomY + 'px';
+                btn.classList.remove('jumping');
+            }, 250);
+            
+            // Sau 5 lần nhảy, đổi text và tự động chuyển sang animation
+            if (jumpCount >= 5) {
+                setTimeout(() => {
+                    btn.textContent = 'Được rồi, tôi đồng ý!';
+                    btn.style.background = 'linear-gradient(45deg, #ff6b6b, #ff8e8e)';
+                    setTimeout(() => {
+                        startAnimation();
+                    }, 2000);
+                }, 500);
+            } else {
+                // Thay đổi text button sau mỗi lần nhảy
+                const texts = [
+                    'Không đồng ý',
+                    'Vẫn không!',
+                    'Thôi mà!',
+                    'Không nha!',
+                    'Ơ kìa!'
+                ];
+                setTimeout(() => {
+                    btn.textContent = texts[jumpCount] || 'Không đồng ý';
+                }, 300);
+            }
+        }
+
+        // Bắt đầu tạo trái tim background khi trang load
+        window.onload = function() {
+            setInterval(createBackgroundHeart, 800);
+        };
+
+        function startAnimation() {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('animationContainer').style.display = 'block';
+            
+            // Tạo chữ rơi liên tục
+            animationInterval = setInterval(createFallingText, 300);
+        }
+
+        function createFallingText() {
+            const animationContainer = document.getElementById('animationContainer');
+            const fallingText = document.createElement('div');
+            
+            fallingText.className = 'falling-text';
+            fallingText.textContent = 'Iuuu gái nhìuuu lắm';
+            
+            // Vị trí ngẫu nhiên trên trục X
+            const randomX = Math.random() * (window.innerWidth - 200);
+            fallingText.style.left = randomX + 'px';
+            
+            // Màu ngẫu nhiên
+            const colorClass = 'color-' + (Math.floor(Math.random() * 8) + 1);
+            fallingText.classList.add(colorClass);
+            
+            // Tốc độ rơi ngẫu nhiên
+            const fallDuration = Math.random() * 3 + 2; // 2-5 giây
+            fallingText.style.animationDuration = fallDuration + 's';
+            
+            // Kích thước ngẫu nhiên
+            const fontSize = Math.random() * 1.5 + 1.5; // 1.5em - 3em
+            fallingText.style.fontSize = fontSize + 'em';
+            
+            animationContainer.appendChild(fallingText);
+            fallingTexts.push(fallingText);
+            
+            // Xóa element sau khi animation kết thúc
+            setTimeout(() => {
+                if (fallingText.parentNode) {
+                    fallingText.parentNode.removeChild(fallingText);
+                }
+                const index = fallingTexts.indexOf(fallingText);
+                if (index > -1) {
+                    fallingTexts.splice(index, 1);
+                }
+            }, fallDuration * 1000);
+        }
+
+        function goBack() {
+            // Dừng tạo chữ mới
+            clearInterval(animationInterval);
+            
+            // Xóa tất cả chữ đang rơi
+            fallingTexts.forEach(text => {
+                if (text.parentNode) {
+                    text.parentNode.removeChild(text);
+                }
+            });
+            fallingTexts = [];
+            
+            // Chuyển về giao diện chính
+            document.getElementById('animationContainer').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'flex';
+        }
+
+        // Tạo một vài chữ rơi ngay khi bắt đầu animation
+        function startAnimation() {
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('animationContainer').style.display = 'block';
+            
+            // Tạo 5 chữ rơi đầu tiên
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => createFallingText(), i * 100);
+            }
+            
+            // Sau đó tạo liên tục
+            animationInterval = setInterval(createFallingText, 300);
+        }
+    </script>
+</body>
+</html>
